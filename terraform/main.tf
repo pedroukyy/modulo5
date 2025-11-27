@@ -5,7 +5,7 @@ provider "aws" {
 # 1. EL BUCKET S3 (Donde se guardan tus archivos .html, .js, .css)
 resource "aws_s3_bucket" "frontend_bucket" {
   # ¡CAMBIA ESTO POR UN NOMBRE ÚNICO! Ejemplo: parcial-juanperez-2025
-  bucket = "parcial-modulo-5-cambiar-esto-por-tu-nombre" 
+  bucket = "parcial-modulo-5-pedrokorone-2025" 
 }
 
 # 2. CONFIGURACIÓN PARA QUE S3 ACTÚE COMO WEBSITE
