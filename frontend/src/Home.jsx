@@ -1,47 +1,85 @@
 import { useState } from 'react';
+import axios from 'axios'; 
+import './App.css'; 
 
-// URL MOCK (Cuando tengas el backend real, la pondremos aquí)
-const API_URL = "https://tu-api-gateway.com/shorten"; 
+// 👇 LA URL EXACTA DE TU PANA (Módulo 1)
+const MODULE_1_API_URL = "https://wz1rxvbdh2.execute-api.us-east-1.amazonaws.com/shorten";
 
 function Home() {
-  const [longUrl, setLongUrl] = useState('');
+  const [originalUrl, setOriginalUrl] = useState('');
   const [shortUrl, setShortUrl] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    // SIMULACIÓN: Esperamos 1 seg y mostramos un link falso
-    setTimeout(() => {
-        setShortUrl(`http://localhost:5173/short/prueba1`);
-        setLoading(false);
-    }, 1000);
+    setError(false);
+    setShortUrl('');
+
+    try {
+      console.log("Enviando a Módulo 1:", originalUrl);
+
+      // 1. Enviamos el dato como 'url'
+      const response = await axios.post(MODULE_1_API_URL, {
+        url: originalUrl 
+      });
+
+      console.log("Respuesta recibida:", response.data);
+
+      // 2. Su código devuelve 'short_id'
+      const codigoRecibido = response.data.short_id; 
+      
+      // 3. Armamos el link con TU dominio
+      const linkFinal = `${window.location.origin}/short/${codigoRecibido}`;
+      
+      setShortUrl(linkFinal);
+
+    } catch (err) {
+      console.error("Error creando el link:", err);
+      setError(true);
+      if (err.message === "Network Error") {
+          setErrorMsg("Error de red. Posible problema de CORS en el backend.");
+      } else {
+          setErrorMsg("No se pudo crear el link.");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div style={{ textAlign: 'center', marginTop: '50px', fontFamily: 'Arial' }}>
-      <h1>✂️ Acortador de URLs (Módulo 5)</h1>
-      <form onSubmit={handleSubmit}>
-        <input 
-          type="url" 
-          placeholder="Pega la URL larga..." 
-          value={longUrl}
-          onChange={(e) => setLongUrl(e.target.value)}
-          required
-          style={{ padding: '10px', width: '300px' }}
-        />
-        <button type="submit" disabled={loading} style={{ padding: '10px', marginLeft: '10px' }}>
-          {loading ? '...' : 'Acortar'}
-        </button>
-      </form>
-      {shortUrl && (
-        <div style={{ marginTop: '20px' }}>
-          <p>Link generado:</p>
-          <a href={shortUrl} target="_blank" rel="noreferrer" style={{ fontSize: '1.2em', fontWeight: 'bold' }}>
-            {shortUrl}
-          </a>
-        </div>
-      )}
+    <div className="app-container">
+      <div className="card">
+        <h1>✂️ Acortador Cloud (Integrado)</h1>
+        
+        <form onSubmit={handleSubmit}>
+          <input 
+            type="url" 
+            placeholder="Pega tu enlace largo aquí..." 
+            value={originalUrl}
+            onChange={(e) => setOriginalUrl(e.target.value)}
+            required
+            className="input-url"
+          />
+          
+          <button type="submit" disabled={loading} className="btn-acortar">
+            {loading ? 'Procesando...' : 'Acortar URL'}
+          </button>
+        </form>
+
+        {error && <p className="error" style={{color:'red'}}>❌ {errorMsg}</p>}
+
+        {shortUrl && (
+          <div className="result">
+            <p>¡Link Creado Exitosamente!</p>
+            <a href={shortUrl} target="_blank" rel="noopener noreferrer" className="short-link">
+              {shortUrl}
+            </a>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
