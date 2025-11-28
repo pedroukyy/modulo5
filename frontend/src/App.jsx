@@ -3,7 +3,7 @@ import axios from 'axios';
 import './App.css'; 
 
 // 👇 LA URL EXACTA DE TU PANA
-const MODULE_1_API_URL = "https://t6fvkvwab9.execute-api.us-east-1.amazonaws.com/shorten"; 
+const MODULE_1_API_URL = "https://wz1rxvbdh2.execute-api.us-east-1.amazonaws.com/shorten";
 
 function App() {
   const [originalUrl, setOriginalUrl] = useState('');
