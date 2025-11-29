@@ -1,16 +1,14 @@
 import { useState } from 'react';
 import axios from 'axios';
+import './App.css';
 
-// URL DE  BACKEND (Módulo 1)
 const MODULE_1_API_URL = "https://wz1rxvbdh2.execute-api.us-east-1.amazonaws.com/shorten";
-
-// URL DE  DASHBOARD (Módulo 4) 
 const MODULE_4_URL = "https://d3nskhypo9b48i.cloudfront.net";
 
 function Home() {
   const [originalUrl, setOriginalUrl] = useState('');
   const [shortUrl, setShortUrl] = useState('');
-  const [statsUrl, setStatsUrl] = useState(''); 
+  const [statsUrl, setStatsUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -23,81 +21,74 @@ function Home() {
     setStatsUrl('');
 
     try {
-      console.log("Enviando URL a Módulo 1:", originalUrl);
-      
-      const response = await axios.post(MODULE_1_API_URL, { 
-        url: originalUrl 
+      const response = await axios.post(MODULE_1_API_URL, {
+        url: originalUrl
       });
 
-      // Obtenemos el ID
-      const codigoRecibido = response.data.short_id; 
+      const codigoRecibido = response.data.short_id;
       
-      // 1. Armamos el link corto (Para compartir)
       const linkFinal = `${window.location.origin}/short/${codigoRecibido}`;
       setShortUrl(linkFinal);
 
-      // 2. Armamos el link de estadísticas (Para analizar)
       const linkEstadisticas = `${MODULE_4_URL}/stats/${codigoRecibido}`;
       setStatsUrl(linkEstadisticas);
 
     } catch (err) {
-      console.error("Error conectando con la API:", err);
+      console.error(err);
       setError(true);
-      setErrorMsg("Error al crear el link.");
+      setErrorMsg("Hubo un problema al crear el enlace. Por favor, intenta de nuevo.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div style={{ textAlign: 'center', marginTop: '50px', fontFamily: 'Arial' }}>
-      <h1>✂️ Acortador Cloud (Integrado)</h1>
-      
-      <form onSubmit={handleSubmit}>
-        <input 
-          type="url" 
-          placeholder="Pega la URL larga aquí..." 
-          value={originalUrl}
-          onChange={(e) => setOriginalUrl(e.target.value)}
-          required
-          style={{ padding: '10px', width: '300px' }}
-        />
-        <button type="submit" disabled={loading} style={{ padding: '10px', marginLeft: '10px', cursor: 'pointer', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '5px' }}>
-          {loading ? 'Creando...' : 'Acortar'}
-        </button>
-      </form>
-
-      {error && (
-        <p style={{ color: 'red', marginTop: '20px' }}>❌ {errorMsg}</p>
-      )}
-
-      {shortUrl && (
-        <div style={{ marginTop: '30px', padding: '20px', border: '1px solid #ddd', borderRadius: '10px', display: 'inline-block', backgroundColor: '#f9f9f9' }}>
-          <p style={{marginBottom: '5px'}}>✅ ¡Link Creado Exitosamente!</p>
+    <div className="main-container">
+      <div className="card">
+        <h1>✂️ Acortador Cloud</h1>
+        <p style={{marginBottom: '1.5rem', color: 'var(--text-light)'}}>
+            Pega tu enlace largo y hazlo corto al instante.
+        </p>
+        
+        <form onSubmit={handleSubmit}>
+          <div className="input-group">
+            <input
+              type="url"
+              placeholder="Ej: https://www.mi-enlace-super-largo.com/..."
+              value={originalUrl}
+              onChange={(e) => setOriginalUrl(e.target.value)}
+              required
+              className="input-modern"
+            />
+          </div>
           
-          {/* LINK CORTO */}
-          <a href={shortUrl} target="_blank" rel="noreferrer" style={{ fontSize: '1.5em', fontWeight: 'bold', color: '#007bff', display: 'block', marginBottom: '20px' }}>
-            {shortUrl}
-          </a>
+          <button type="submit" disabled={loading} className="btn-modern btn-primary">
+            {loading ? '🔄 Procesando...' : 'Acortar URL'}
+          </button>
+        </form>
 
-          <hr style={{margin: '15px 0', border: '0', borderTop: '1px solid #eee'}}/>
+        {error && (
+          <div className="error-msg">
+              ❌ {errorMsg}
+          </div>
+        )}
 
-          {/* BOTÓN DE ESTADÍSTICAS */}
-          <a href={statsUrl} target="_blank" rel="noreferrer" style={{ textDecoration: 'none' }}>
-            <button style={{ 
-              padding: '10px 20px', 
-              cursor: 'pointer', 
-              backgroundColor: '#28a745', 
-              color: 'white', 
-              border: 'none', 
-              borderRadius: '5px',
-              fontWeight: 'bold'
-            }}>
-              📊 Ver Estadísticas
-            </button>
-          </a>
-        </div>
-      )}
+        {shortUrl && (
+          <div className="result-container">
+            <p>✅ ¡Tu enlace está listo!</p>
+            
+            <a href={shortUrl} target="_blank" rel="noreferrer" className="short-link">
+              {shortUrl}
+            </a>
+
+            <a href={statsUrl} target="_blank" rel="noreferrer" style={{ textDecoration: 'none' }}>
+              <button className="btn-modern btn-success">
+                📊 Ver Estadísticas del Enlace
+              </button>
+            </a>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
