@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-// URL DE TU BACKEND (Módulo 1)
+// URL DE  BACKEND (Módulo 1)
 const MODULE_1_API_URL = "https://wz1rxvbdh2.execute-api.us-east-1.amazonaws.com/shorten";
 
-// 👇 URL DE TU DASHBOARD (Módulo 4) - La saqué de tus mensajes anteriores
+// URL DE  DASHBOARD (Módulo 4) 
 const MODULE_4_URL = "https://d3nskhypo9b48i.cloudfront.net";
 
 function Home() {
   const [originalUrl, setOriginalUrl] = useState('');
   const [shortUrl, setShortUrl] = useState('');
-  const [statsUrl, setStatsUrl] = useState(''); // Nuevo estado para el link de stats
+  const [statsUrl, setStatsUrl] = useState(''); 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');

@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from './Home';      // Importamos el formulario que acabamos de mover
-import Redirect from './Redirect'; // Importamos la pantalla de espera
+import Home from './Home';      
+import Redirect from './Redirect'; 
 
 function App() {
   return (

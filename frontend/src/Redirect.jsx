@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
-// 👇 ESTA ES TU API DEL MÓDULO 3 (La que lee DynamoDB)
 const MODULE_3_API_URL = "https://rwfkmc03y1.execute-api.us-east-1.amazonaws.com";
 
 function Redirect() {
@@ -10,23 +9,20 @@ function Redirect() {
   const [countdown, setCountdown] = useState(5);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [destino, setDestino] = useState(null); // Aquí guardaremos la URL real (Netflix, Google, etc)
+  const [destino, setDestino] = useState(null); 
 
-  // 1. CONSULTAR A TU BACKEND (MÓDULO 3)
   useEffect(() => {
     const fetchDestino = async () => {
       try {
         console.log("Consultando destino para:", codigo);
-        // Llamamos a tu API
-        const response = await axios.get(`${MODULE_3_API_URL}/stats/${codigo}`);
+        
+        const response = await axios.get(`${MODULE_3_API_URL}/stats/${codigo}?es_visita=true`);
         
         console.log("Respuesta BD:", response.data);
 
-        // Si la API devuelve una urlOriginal, la guardamos
         if (response.data && response.data.urlOriginal) {
           setDestino(response.data.urlOriginal);
         } else {
-          // Si el código no existe en la BD
           setError(true);
         }
         setLoading(false);
@@ -41,16 +37,13 @@ function Redirect() {
     fetchDestino();
   }, [codigo]);
 
-  // 2. CUENTA REGRESIVA Y REDIRECCIÓN
   useEffect(() => {
-    // Solo iniciamos el conteo si ya tenemos un DESTINO válido
     if (loading || error || !destino) return;
 
     const timer = setInterval(() => {
       setCountdown((prevCount) => {
         if (prevCount <= 1) {
           clearInterval(timer);
-          // 🚀 ¡DESPEGUE! Redirigimos a la URL real que trajo la base de datos
           window.location.href = destino; 
           return 0;
         }
@@ -61,7 +54,6 @@ function Redirect() {
     return () => clearInterval(timer);
   }, [loading, error, destino]);
 
-  // 3. PANTALLAS VISUALES
   if (loading) {
     return <div style={styles.container}><h2>🔎 Buscando en la nube...</h2></div>;
   }
@@ -88,7 +80,7 @@ function Redirect() {
   );
 }
 
-// Estilos simples para que se vea bien
+// Estilos
 const styles = {
   container: {
     display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', 
