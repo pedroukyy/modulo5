@@ -39,12 +39,12 @@ html, body {
    2. CONTENEDOR PRINCIPAL (El Centrador)
 ========================================= */
 .main-container {
-  /* Usamos GRID porque es "a prueba de balas" para centrar */
-  display: grid;
-  place-items: center; /* Centra horizontal y verticalmente */
-  
-  min-height: 100vh; /* Ocupa toda la altura de la ventana */
-  width: 100%;
+  display: flex;
+  place-items: center; 
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; 
+  width: 100vw;
   padding: 20px;
 }
 
