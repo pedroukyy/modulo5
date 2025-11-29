@@ -2,12 +2,12 @@
    Variables Globales y Reset
 ========================================= */
 :root {
-  --primary-color: #3b82f6; /* Azul moderno */
+  --primary-color: #3b82f6; 
   --primary-hover: #2563eb;
-  --success-color: #10b981; /* Verde moderno */
+  --success-color: #10b981; 
   --success-hover: #059669;
-  --error-color: #ef4444;   /* Rojo moderno */
-  --bg-color: #f3f4f6;      /* Gris claro de fondo */
+  --error-color: #ef4444;   
+  --bg-color: #f3f4f6;      
   --card-bg: #ffffff;
   --text-color: #1f2937;
   --text-light: #6b7280;
@@ -22,37 +22,42 @@
 }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background-color: var(--bg-color);
   color: var(--text-color);
   line-height: 1.5;
+  /* Aseguramos que el body no desborde */
+  overflow-x: hidden; 
 }
 
 /* =========================================
-   Layout Principal (Centrado)
+   Layout Principal
 ========================================= */
 .main-container {
-  min-height: 100vh; /* Ocupa toda la altura de la pantalla */
+  width: 100%;       /* ✅ CORRECTO: Se adapta al espacio disponible */
+  min-height: 100vh; /* Ocupa toda la altura vertical */
   display: flex;
-  justify-content: center; /* Centra horizontalmente */
-  align-items: center;     /* Centra verticalmente */
+  justify-content: center;
+  align-items: center;
   padding: 20px;
 }
 
-/* Estilo de Tarjeta Profesional */
+/* =========================================
+   Tarjeta (Card)
+========================================= */
 .card {
   background-color: var(--card-bg);
   padding: 2.5rem;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   width: 100%;
-  max-width: 480px; /* Ancho máximo para que no se vea gigante */
+  max-width: 480px;
   text-align: center;
   transition: transform 0.2s ease-in-out;
 }
 
 .card:hover {
-    transform: translateY(-2px); /* Pequeño efecto al pasar el mouse */
+    transform: translateY(-2px);
 }
 
 h1 {
@@ -63,7 +68,7 @@ h1 {
 }
 
 /* =========================================
-   Componentes de Formulario (Inputs y Botones)
+   Inputs y Botones
 ========================================= */
 .input-group {
   margin-bottom: 1.5rem;
@@ -75,8 +80,8 @@ h1 {
   border: 2px solid #e5e7eb;
   border-radius: 12px;
   font-size: 1rem;
-  transition: border-color 0.2s;
   outline: none;
+  transition: border-color 0.2s;
 }
 
 .input-modern:focus {
@@ -91,18 +96,16 @@ h1 {
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s, transform 0.1s;
+  transition: all 0.2s;
 }
 
 .btn-primary {
   background-color: var(--primary-color);
   color: white;
 }
-
 .btn-primary:hover:not(:disabled) {
   background-color: var(--primary-hover);
 }
-
 .btn-primary:disabled {
   background-color: #9ca3af;
   cursor: not-allowed;
@@ -116,6 +119,7 @@ h1 {
 .btn-success:hover {
     background-color: var(--success-hover);
 }
+
 .btn-secondary {
     background-color: #e5e7eb;
     color: var(--text-color);
@@ -124,7 +128,6 @@ h1 {
 .btn-secondary:hover {
     background-color: #d1d5db;
 }
-
 
 /* =========================================
    Resultados y Mensajes
@@ -144,7 +147,7 @@ h1 {
   color: var(--primary-color);
   text-decoration: none;
   margin: 1rem 0;
-  word-break: break-all; /* Evita que links largos rompan el diseño */
+  word-break: break-all;
 }
 
 .error-msg {
@@ -157,7 +160,7 @@ h1 {
 }
 
 /* =========================================
-   Pantalla de Carga / Redirección
+   Animaciones (Loading & Countdown)
 ========================================= */
 .loading-pulse {
     display: inline-block;
